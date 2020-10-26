@@ -1,0 +1,44 @@
+<template>
+  <div>
+    <div v-for="(item, index) in mylist">
+      <div>name：{{ item.name }} </div>
+      <div>age：{{ item.age }} <button @tap="plus(index)">年龄加一</button></div>
+      <div>like：{{ item.like }}</div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import wepy from '@wepy/core'
+  import { mapState, mapActions } from '@wepy/x'
+  import store from '../store'
+
+
+  wepy.page({
+    store,
+    data: {
+      mylist: []
+    },
+
+    computed: {
+      // ...mapState([ 'list' ]),
+    },
+
+    methods: {
+      ...mapActions([
+        'getList'
+      ]),
+      plus(index) {
+        this.mylist[index].age++
+      }
+    },
+
+    created () {
+      this.getList()
+        .then(res => {
+          this.mylist = res.data.list
+        })
+    }
+  });
+</script>
+
